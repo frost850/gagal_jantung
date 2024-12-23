@@ -346,8 +346,7 @@ def show_about_page():
     
     ### ⚕️ Catatan Penting:
     Aplikasi ini dikembangkan untuk tujuan edukasi dan penelitian. Hasil prediksi tidak boleh digunakan 
-    sebagai pengganti diagnosis medis profesional. Selalu konsultasikan dengan tenaga medis yang berkualifikasi 
-    untuk diagnosis dan perawatan medis.
+    sebagai pengganti diagnosis medis profesional.
 
     ### 👨‍💻 Pengembang:
     **Muhamad Farhan Ismail Dewanata**
