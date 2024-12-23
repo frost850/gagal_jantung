@@ -169,7 +169,7 @@ def show_data_analysis(data):
 
 def show_enhanced_visualizations(data):
     st.markdown('<div class="stCard">', unsafe_allow_html=True)
-    st.write("### 📊 Data Corelation")
+    st.write("### 📊 Matrix Correlations")
     
     # Correlation Matrix
     plt.figure(figsize=(12, 8))
