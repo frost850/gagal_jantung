@@ -133,17 +133,48 @@ def main():
 def show_home_page():
     st.markdown('<div class="stCard">', unsafe_allow_html=True)
     st.subheader("📊 Visualisasi Dataset dan Evaluasi Model")
-    file = st.file_uploader("Unggah file CSV", type=["csv"])
-
-    if file is not None:
+    
+    # Debugging: Tampilkan daftar file dalam direktori
+    current_dir = os.getcwd()
+    files_in_dir = os.listdir(current_dir)
+    st.write("Files in directory:", files_in_dir)
+    
+    dataset_option = st.radio(
+        "Pilih Dataset",
+        ("Dataset Default", "Unggah Dataset Kustom")
+    )
+    
+    if dataset_option == "Dataset Default":
         try:
-            heart_data = pd.read_csv(file, delimiter=',', encoding='utf-8')
+            # Tampilkan path lengkap file untuk debugging
+            file_path = os.path.join(current_dir, 'heart_failure_clinical_records_dataset original.csv')
+            st.write("Mencoba membaca file dari:", file_path)
+            
+            # Load default dataset
+            heart_data = pd.read_csv('heart_failure_clinical_records_dataset  original.csv')
+            st.success("Dataset default berhasil dimuat!")
             heart_data = preprocess_data(heart_data)
             show_data_analysis(heart_data)
             train_and_evaluate_models(heart_data)
-        except Exception as e:
-            st.error(f"Error: {str(e)}")
+        except FileNotFoundError as e:
+            st.error(f"File dataset default tidak ditemukan. Error: {str(e)}")
+            st.error(f"Current directory: {current_dir}")
+    else:
+        # Option to upload custom dataset
+        file = st.file_uploader("Unggah file CSV", type=["csv"])
+        if file is not None:
+            try:
+                heart_data = pd.read_csv(file, delimiter=',', encoding='utf-8')
+                st.success("Dataset kustom berhasil diunggah!")
+                heart_data = preprocess_data(heart_data)
+                show_data_analysis(heart_data)
+                train_and_evaluate_models(heart_data)
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
+    
     st.markdown('</div>', unsafe_allow_html=True)
+
+
 
 def preprocess_data(data):
     """Melakukan preprocessing pada dataset"""
@@ -153,6 +184,7 @@ def preprocess_data(data):
     for col in categorical_columns:
         data[col] = le.fit_transform(data[col])
     return data
+
 
 def show_data_analysis(data):
     st.markdown('<div class="stCard">', unsafe_allow_html=True)
@@ -169,7 +201,7 @@ def show_data_analysis(data):
 
 def show_enhanced_visualizations(data):
     st.markdown('<div class="stCard">', unsafe_allow_html=True)
-    st.write("### 📊 Matrix Correlations")
+    st.write("### 📊 Data Visualizations")
     
     # Correlation Matrix
     plt.figure(figsize=(12, 8))
@@ -346,7 +378,8 @@ def show_about_page():
     
     ### ⚕️ Catatan Penting:
     Aplikasi ini dikembangkan untuk tujuan edukasi dan penelitian. Hasil prediksi tidak boleh digunakan 
-    sebagai pengganti diagnosis medis profesional.
+    sebagai pengganti diagnosis medis profesional. Selalu konsultasikan dengan tenaga medis yang berkualifikasi 
+    untuk diagnosis dan perawatan medis.
 
     ### 👨‍💻 Pengembang:
     **Muhamad Farhan Ismail Dewanata**
